@@ -1,15 +1,26 @@
 package com.example.DomguiaSimo_BankingApp.User;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.grammars.hql.HqlParser;
 
 @Entity
 @Table(name="users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull(message = "Name required")
+    @NotBlank(message = "Name required")
     private String name;
+    @Email(message = "Invalid email format")
+    @NotNull(message = "Email required")
     private String email;
+    @NotNull(message = "Password required")
+    @NotBlank(message = "Password required")
     private String password;
     private String token;
 

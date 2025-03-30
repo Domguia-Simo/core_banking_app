@@ -1,6 +1,9 @@
 package com.example.DomguiaSimo_BankingApp.Transaction;
 
+import com.example.DomguiaSimo_BankingApp.Account.Account;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 import java.util.Date;
 
@@ -11,21 +14,26 @@ enum TransactionType{
 @Table(name="transactions")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToMany
-    private Long accountId;
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
+    @NotNull(message = "Transaction type required")
     private TransactionType transactionType;
 
+    @NotNull(message = "Date required")
     private Date date;
 
+    @Positive(message = "No negative number")
+    @NotNull(message = "amount required")
     private Float amount;
 
     public Transaction(){}
-    public Transaction(Long account_id ,Date date ,TransactionType tt, Float amount){
-        this.accountId = account_id;
+    public Transaction(Account account , Date date , TransactionType tt, Float amount){
+        this.account = account;
         this.amount = amount;
         this.transactionType = tt;
         this.date = date;
@@ -36,8 +44,8 @@ public class Transaction {
         this.id = id;
     }
 
-    public void setAccountId(Long account_id) {
-        this.accountId = account_id;
+    public void setAccount(Account account_id) {
+        this.account = account_id;
     }
 
     public void setTransactionType(TransactionType transactionType) {
@@ -59,8 +67,8 @@ public class Transaction {
         return id;
     }
 
-    public Long getAccountId() {
-        return accountId;
+    public Account getAccount() {
+        return account;
     }
 
     public TransactionType getTransactionType() {

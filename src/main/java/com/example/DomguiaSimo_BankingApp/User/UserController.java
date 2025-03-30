@@ -1,9 +1,13 @@
 package com.example.DomguiaSimo_BankingApp.User;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -23,7 +27,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    ResponseEntity<?> register(@RequestBody User user){
+    ResponseEntity<?> register(@Valid @RequestBody User user , BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            Map<String ,String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField() ,error.getDefaultMessage()));
+            return new ResponseEntity<>(Map.of("errors" ,errors) , HttpStatus.BAD_REQUEST);
+        }
         System.out.println(user);
         userService.registerUser(user);
         System.out.println("user registration");
@@ -47,7 +56,12 @@ public class UserController {
     }
 
     @PutMapping("/update-user/{id}")
-    ResponseEntity<?> updateUser(@PathVariable("id") Long id ,@RequestBody User user){
+    ResponseEntity<?> updateUser(@PathVariable("id") Long id ,@Valid @RequestBody User user ,BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            Map<String ,String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(e -> errors.put(e.getField() ,e.getDefaultMessage()));
+            return new ResponseEntity<>(Map.of("errors",errors) ,HttpStatus.BAD_REQUEST);
+        }
         userService.updateUser(id ,user);
         return ResponseEntity.ok("User updated successfully");
     }

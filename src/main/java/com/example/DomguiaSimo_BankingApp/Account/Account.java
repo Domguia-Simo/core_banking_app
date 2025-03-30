@@ -1,6 +1,10 @@
 package com.example.DomguiaSimo_BankingApp.Account;
 
+import com.example.DomguiaSimo_BankingApp.User.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.Date;
 
@@ -11,14 +15,16 @@ enum Status{
 @Table(name = "accounts")
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Status status;
+    @PositiveOrZero(message = "No negative number")
     private Float amount;
     private Date created_at = new Date();
 
-//    @OneToOne
-    Long userId;
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    User user;
 
     public Account(){}
     public Account(Status status ,Float amount ){
@@ -30,7 +36,7 @@ public class Account {
 
 
     public void setId(Long id) {this.id = id;}
-    public void setUserId(Long userId) {this.userId = userId;}
+    public void setUser(User userId) {this.user = userId;}
     public void setCreated_at(Date date){this.created_at = date;}
     public void setAmount(Float amount){this.amount = amount;}
     public void setStatus(Status status){this.status = status;}
@@ -38,7 +44,7 @@ public class Account {
 //    Getters
 
     public Long getId() {return id;}
-    public Long getUserId(){return userId;}
+    public User getUserId(){return user;}
     public Date getCreated_at(){return this.created_at;}
     public Status getStatus(){return this.status;}
     public Float getAmount(){return this.amount;}

@@ -1,5 +1,7 @@
 package com.example.DomguiaSimo_BankingApp.Account;
 
+import com.example.DomguiaSimo_BankingApp.User.User;
+import com.example.DomguiaSimo_BankingApp.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +14,19 @@ public class AccountService implements AccountServiceInterface{
 
     @Autowired
     AccountRepository accountRepo;
+    @Autowired
+    UserRepository  userRepository;
 
     @Override
-    public void createAccount(Account account) {
-        accountRepo.save(account);
+    public Map<?,?> createAccount(Long user_id ,Account account) {
+        Optional<User> Ou = userRepository.findById(user_id);
+        if(Ou.isPresent()){
+            account.setUser(Ou.get());
+            Account result = accountRepo.save(account);
+            return Map.of("success" ,result);
+        }else{
+            return Map.of("failed" ,"Invalid user_id");
+        }
     }
 
     @Override
@@ -42,19 +53,24 @@ public class AccountService implements AccountServiceInterface{
     }
 
     @Override
-    public void deleteAccount(Long id) {
+    public Boolean deleteAccount(Long id) {
         Optional<Account> Oa = accountRepo.findById(id);
         if(Oa.isPresent()){
             accountRepo.delete(Oa.get());
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void updateAccount(Long id, Account account) {
+    public Boolean updateAccount(Long id, Account account) {
         Optional<Account> Oa = accountRepo.findById(id);
         if(Oa.isPresent()){
+            account.setUser(Oa.get().user);
             accountRepo.deleteById(id);
             accountRepo.save(account);
+        return true;
         }
+        return false;
     }
 }
