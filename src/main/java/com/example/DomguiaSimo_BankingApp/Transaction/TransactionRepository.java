@@ -14,4 +14,7 @@ public interface TransactionRepository extends JpaRepository<Transaction ,Long> 
 //    @Query(value = "select * from transactions where account_id= ?1" ,nativeQuery = true)
     public List<Transaction> findByAccount(Account account);
 
+//    @Query(value = "sel")
+    public List<Transaction> findByAccountAndTransactionType(Account account ,TransactionType type);
+
 }

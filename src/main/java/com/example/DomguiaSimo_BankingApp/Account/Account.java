@@ -1,6 +1,7 @@
 package com.example.DomguiaSimo_BankingApp.Account;
 
 import com.example.DomguiaSimo_BankingApp.User.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -14,6 +15,7 @@ enum Status{
 @Entity
 @Table(name = "accounts")
 public class Account {
+     final static Float max_depoit = 2_000_000.0F;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,6 +26,7 @@ public class Account {
 
     @ManyToOne()
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     User user;
 
     public Account(){}

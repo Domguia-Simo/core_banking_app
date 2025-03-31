@@ -45,8 +45,16 @@ public class TransactionController {
     }
 
     @GetMapping("/get-account-transaction/{account_id}")
-    ResponseEntity<?> getAccountTransaction(@PathVariable("account_id") Long account_id){
-        return ResponseEntity.ok(transService.getAccountTransaction(account_id));
+    ResponseEntity<?> getAccountTransaction(@PathVariable("account_id") Long account_id ,@RequestParam Map<String,String> options){
+        TransactionType type = null;
+        if(options.containsKey("type")){
+            if(TransactionType.CREDIT.name().equals(options.get("type").toUpperCase())){
+                type =TransactionType.CREDIT;
+            }else if(TransactionType.DEBIT.name().equals(options.get("type").toUpperCase())){
+                type = TransactionType.DEBIT;
+            }
+        }
+        return ResponseEntity.ok(transService.getAccountTransaction(account_id ,type));
     }
 
     @DeleteMapping("/delete-transaction/{id}")

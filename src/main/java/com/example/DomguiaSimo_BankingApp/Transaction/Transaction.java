@@ -1,33 +1,31 @@
 package com.example.DomguiaSimo_BankingApp.Transaction;
 
 import com.example.DomguiaSimo_BankingApp.Account.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 
 import java.util.Date;
 
-enum TransactionType{
-    DEBIT ,CREDIT
-}
 @Entity
 @Table(name="transactions")
 public class Transaction {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
+    @JsonIgnore
     private Account account;
 
-    @NotNull(message = "Transaction type required")
     private TransactionType transactionType;
 
-    @NotNull(message = "Date required")
+//    @NotBlank(message = "Date required")
     private Date date;
 
-    @Positive(message = "No negative number")
+    @Positive(message = "No zero or negative number")
     @NotNull(message = "amount required")
     private Float amount;
 

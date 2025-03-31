@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -45,11 +46,16 @@ public class TransactionService implements  TransactionServiceInterface{
     }
 
     @Override
-    public List<Transaction> getAccountTransaction(Long account_id) {
-        Optional<Account> Oa = accountRepository.findById(account_id);
+    public List<Transaction> getAccountTransaction(Long account_id ,TransactionType type) {
+            Optional<Account> Oa = accountRepository.findById(account_id);
         if(Oa.isPresent()){
             Account account = Oa.get();
-            List<Transaction> transactions = transRepo.findByAccount(account);
+            List<Transaction> transactions = new LinkedList<>();
+            if(type == null){
+                transactions = transRepo.findByAccount(account);
+            }else{
+                transactions = transRepo.findByAccountAndTransactionType(account ,type);
+            }
             return transactions;
         }
         return null;

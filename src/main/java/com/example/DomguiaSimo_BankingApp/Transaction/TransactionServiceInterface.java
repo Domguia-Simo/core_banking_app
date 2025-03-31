@@ -7,7 +7,7 @@ public interface TransactionServiceInterface {
     public Map<?,?> createTransaction(Long account_id ,Transaction trans);
     public List<Transaction> getTransactions();
     public Transaction getTransaction(Long id);
-    public List<Transaction> getAccountTransaction(Long account_id);
+    public List<Transaction> getAccountTransaction(Long account_id ,TransactionType type);
     public void deleteTransaction(Long id);
     public Boolean updateTransaction(Long id,Transaction trans);
 }
