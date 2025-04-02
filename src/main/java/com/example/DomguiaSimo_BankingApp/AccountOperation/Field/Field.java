@@ -1,7 +1,6 @@
 package com.example.DomguiaSimo_BankingApp.AccountOperation.Field;
 
 import com.example.DomguiaSimo_BankingApp.AccountOperation.Operation.Operation;
-import com.example.DomguiaSimo_BankingApp.AccountOperation.ValidationRule.ValidationRule;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -33,8 +32,6 @@ public class Field {
     @JsonIgnore
     private Operation operation;
 
-//    @OneToMany
-//    private List<ValidationRule> validationRule;
 
     public Field(){}
     public Field(String name ,Type type ,Map<String, String> condition){
@@ -52,9 +49,7 @@ public class Field {
 
     public void setCondition(Map<String, String> condition) {this.condition = condition;}
 
-    //    public void setValidationRule(List<ValidationRule> validationRule) {
-//        this.validationRule = validationRule;
-//    }
+
 
     //    Getter
     public Long getId(){return id;}
@@ -64,7 +59,5 @@ public class Field {
     public Map<String, String> getCondition() {return condition;}
 
     public Operation getOperation() {return operation;}
-    //    public List<ValidationRule> getValidationRule() {
-//        return validationRule;
-//    }
+
 }

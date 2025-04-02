@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class OperationController {
     @Autowired
     private OperationService operationService;
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Operation creation endpoint")
     @PostMapping("/create-operation")
     ResponseEntity<?> createOperation(@Valid @RequestBody Operation operation , BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -26,16 +28,19 @@ public class OperationController {
         return new ResponseEntity<>(operationService.createOperation(operation) ,HttpStatus.OK);
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Getting the list od endpoints")
     @GetMapping("/get-operations")
     ResponseEntity<?> getOperations(){
         return new ResponseEntity<>(operationService.getOperations() ,HttpStatus.OK);
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Getting a single operation")
     @GetMapping("/get-operation/{id}")
     ResponseEntity<?> getOperation(@PathVariable("id") Long id){
         return new ResponseEntity<>(operationService.getOperation(id) ,HttpStatus.OK);
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Deleting an endpoint")
     @DeleteMapping("/delete-operation/{id}")
     ResponseEntity<?> deleteOperation(@PathVariable("id") Long id){
         Boolean result = operationService.deleteOperation(id);
@@ -45,6 +50,7 @@ public class OperationController {
         return new ResponseEntity<>(Map.of("error" ,"Invalid operation id") ,HttpStatus.BAD_REQUEST);
     }
 
+    @io.swagger.v3.oas.annotations.Operation(summary = "Updating an operation")
     @PutMapping("/update-operation/{id}")
     ResponseEntity<?> updateOperation(@PathVariable("id") Long id, @Valid @RequestBody Operation operation, BindingResult bindingResult){
         if(bindingResult.hasErrors()){

@@ -1,6 +1,9 @@
 package com.example.DomguiaSimo_BankingApp.Account;
 
 import com.example.DomguiaSimo_BankingApp.Transaction.Transaction;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,10 @@ public class AccountController {
 
 //    CORE TASK/OPERATIONS
 //    Crediting an account (adding money)
+    @Operation(summary = "Crediting an account", responses = {
+            @ApiResponse(responseCode = "200", description = "Account credited successfully" ,content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "401", description = "Invalid input data")
+    })
     @PostMapping("/credit-account/{id}")
     ResponseEntity<?> creditAccount(@PathVariable("id") Long id, @Valid @RequestBody Transaction trans, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -39,6 +46,10 @@ public class AccountController {
     }
 
 //    Debiting an account (removing money)
+@Operation(summary = "Debiting an account", responses = {
+        @ApiResponse(responseCode = "200", description = "Account debited successfully" ,content = @Content(mediaType = "application/json")),
+        @ApiResponse(responseCode = "401", description = "Invalid input data")
+})
     @PostMapping("/debit-account/{id}")
     ResponseEntity<?> debitAccount(@PathVariable("id") Long id, @Valid @RequestBody Transaction trans, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -55,6 +66,10 @@ public class AccountController {
     }
 
 //    account balance
+@Operation(summary = "Getting your account balance", responses = {
+        @ApiResponse(responseCode = "200" ),
+        @ApiResponse(responseCode = "401", description = "Invalid input data")
+})
     @GetMapping("/balance/{id}")
     ResponseEntity<?> getBalance(@PathVariable("id") Long id){
         Map<?,?> result = accountService.accountBalance(id);
@@ -65,6 +80,10 @@ public class AccountController {
         }
     }
 
+    @Operation(summary = "Account creation endpoint", responses = {
+            @ApiResponse(responseCode = "200", description = "Account created successfully" ,content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "401", description = "Invalid input data")
+    })
     @PostMapping("/create-account/{user_id}")
     ResponseEntity<?> createAccount(@PathVariable("user_id") Long user_id ,@Valid @RequestBody Account account , BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -80,21 +99,26 @@ public class AccountController {
         }
     }
 
+
+    @Operation(summary = "Getting an accout from its id")
     @GetMapping("/get-account/{id}")
     ResponseEntity<?> getAccount(@PathVariable("id") Long id){
         return new ResponseEntity(accountService.getAccount(id) , HttpStatus.OK);
     }
 
+    @Operation(summary = "To get th list of accounts")
     @GetMapping("/get-accounts")
     ResponseEntity<?> getAccounts(){
         return new ResponseEntity(accountService.getAccounts() , HttpStatus.OK);
     }
 
+    @Operation(summary = "Getting an account using the user id")
     @GetMapping("/get-user-account/{user_id}")
     ResponseEntity<?> getUserAccount(@PathVariable("user_id") Long id){
         return new ResponseEntity(accountService.getUserAccount(id) , HttpStatus.OK);
     }
 
+    @Operation(summary = "To delete an account using its id")
     @DeleteMapping("/delete-account/{id}")
     ResponseEntity<?> deleteAccount(@PathVariable("id") Long id){
         Boolean result = accountService.deleteAccount(id);
@@ -104,6 +128,7 @@ public class AccountController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @Operation(summary = "To update an existing account")
     @PutMapping("/update-account/{id}")
     ResponseEntity<?> updateAccount(@PathVariable("id") Long id ,@Valid @RequestBody Account account ,BindingResult bindingResult){
         if(bindingResult.hasErrors()){

@@ -6,10 +6,18 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.grammars.hql.HqlParser;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="users")
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,11 +32,18 @@ public class User {
     private String password;
     private String token;
 
+    private Role role;
+
+    private List<GrantedAuthority> authorities = null;
+
     public User(){}
-    public User(String name ,String email ,String password){
+    public User(String name ,String email ,String password ){
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = Role.USER;
+        this.authorities = new ArrayList<>();
+        this.authorities.add(new SimpleGrantedAuthority(Role.USER.name()));
     }
 
 //    Setter
@@ -38,12 +53,26 @@ public class User {
     public void setPassword(String password){this.password = password;}
     public void setToken(String token){this.token = token;}
 
-//    Getter
+    public void setRole(Role role) {this.role = role;}
+
+    //    Getter
     public Long getId(){return id;}
     public String getName(){return name;}
     public String getEmail(){return email;}
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
     public String getPassword(){return password;}
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
     public String getToken(){return token;}
 
-
+    public Role getRole() {return role;}
 }
