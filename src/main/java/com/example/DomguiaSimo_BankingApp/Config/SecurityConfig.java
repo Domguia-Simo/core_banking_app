@@ -37,9 +37,9 @@ public class SecurityConfig {
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/user/**").permitAll()
-                        .requestMatchers("/api/account/**").permitAll()
-                        .requestMatchers("/api/transaction/**").hasAuthority(Role.USER.name())
-                        .requestMatchers("/api/operation/**").permitAll()
+                        .requestMatchers("/api/account/**").hasAnyAuthority(Role.USER.name() ,Role.ADMIN.name())
+                        .requestMatchers("/api/transaction/**").hasAnyAuthority(Role.USER.name() ,Role.ADMIN.name())
+                        .requestMatchers("/api/operation/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers( "/v3/api-docs").permitAll()
                         .requestMatchers( "/swagger-ui.html").permitAll()
                         .requestMatchers( "/swagger-ui.html/**").permitAll()

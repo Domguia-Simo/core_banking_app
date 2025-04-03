@@ -60,6 +60,14 @@ public class UserService implements UserServiceInterface , UserDetailsService{
         userRepo.save(user);
     }
 
+    public void registerAdmin(User user) {
+        String password = user.getPassword();
+        password = bcrypt.encode(password);
+        user.setPassword(password);
+        user.setRole(Role.ADMIN);
+        userRepo.save(user);
+    }
+
     @Override
     public List<User> getUsers() {
         return userRepo.findAll();

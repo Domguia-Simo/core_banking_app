@@ -54,6 +54,22 @@ public class UserController {
         return ResponseEntity.ok("Registration successfully");
     }
 
+//    Admin controllers
+//    Admin registration
+    @PostMapping("/register-admin")
+    ResponseEntity<?> registerAdmin(@Valid @RequestBody User user , BindingResult bindingResult){
+        System.out.println("Admin registration");
+        if(bindingResult.hasErrors()){
+            Map<String ,String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField() ,error.getDefaultMessage()));
+            return new ResponseEntity<>(Map.of("errors" ,errors) , HttpStatus.BAD_REQUEST);
+        }
+        System.out.println(user);
+        userService.registerAdmin(user);
+        System.out.println("Admin registration");
+        return ResponseEntity.ok("Registration successfully");
+    }
+
     @Operation(summary = "Getting a user")
     @GetMapping("/get-user/{id}")
     ResponseEntity<?> getUser(@PathVariable("id") Long id){

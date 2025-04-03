@@ -1,6 +1,7 @@
 package com.example.DomguiaSimo_BankingApp.AccountOperation.Operation;
 
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,12 @@ public class OperationController {
             return new ResponseEntity(Map.of("error" ,errors) , HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(operationService.createOperation(operation) ,HttpStatus.OK);
+    }
+
+    @PostMapping("/execute-operation")
+    ResponseEntity<?> executeOperation(@RequestBody Map<?,?> data){
+//    Logic for the dynamic operation execution
+    return ResponseEntity.ok("Operation executed correctly");
     }
 
     @io.swagger.v3.oas.annotations.Operation(summary = "Getting the list od endpoints")

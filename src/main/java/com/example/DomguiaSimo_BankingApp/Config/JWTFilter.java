@@ -28,7 +28,7 @@ public class JWTFilter extends OncePerRequestFilter{
     private UserService userService;
 
     List<String> protectedRoutes = List.of(
-            "/api/transaction"
+            "/api/transaction" ,"/api/operation" ,"/api/account"
     );
     private boolean startsWith(String url){
         for(int i=0;i<protectedRoutes.size();i++){

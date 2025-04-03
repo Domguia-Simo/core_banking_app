@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @NotNull(message = "Password required")
     @NotBlank(message = "Password required")
     private String password;
-    private String token;
+//    private String token;
 
     private Role role;
 
@@ -51,7 +51,7 @@ public class User implements UserDetails {
     public void setEmail(String email){this.email = email;}
     public void setName(String name){this.name = name;}
     public void setPassword(String password){this.password = password;}
-    public void setToken(String token){this.token = token;}
+//    public void setToken(String token){this.token = token;}
 
     public void setRole(Role role) {this.role = role;}
 
@@ -72,7 +72,7 @@ public class User implements UserDetails {
         return email;
     }
 
-    public String getToken(){return token;}
+//    public String getToken(){return token;}
 
     public Role getRole() {return role;}
 }
