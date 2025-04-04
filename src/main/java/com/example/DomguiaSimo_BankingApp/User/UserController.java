@@ -29,7 +29,7 @@ public class UserController {
 
     @Operation(summary = "Account authentication endpoint")
     @PostMapping("/login")
-    ResponseEntity<?> login(@RequestBody User user){
+    public ResponseEntity<?> login(@RequestBody User user){
         System.out.println("In the user login controller");
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
@@ -41,7 +41,7 @@ public class UserController {
 
     @Operation(summary = "Account creation")
     @PostMapping("/register")
-    ResponseEntity<?> register(@Valid @RequestBody User user , BindingResult bindingResult){
+    public ResponseEntity<?> register(@Valid @RequestBody User user , BindingResult bindingResult){
         System.out.println("User registration");
         if(bindingResult.hasErrors()){
             Map<String ,String> errors = new HashMap<>();
